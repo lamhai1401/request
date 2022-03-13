@@ -17,7 +17,7 @@ func TestAPI(t *testing.T) {
 	os.Setenv("MAX_CONNECTION_PER_HOST", "20")
 	os.Setenv("MAX_IDLE_CONNECTION_PER_HOST", "20")
 
-	url := "https://signal-controller-staging.quickom.com/signaling/container/list"
+	url := "http://localhost:4000/api/info/pc_id"
 	api := request.NewAPI(timeOut)
 
 	t.Run("Test Close", func(t *testing.T) {
@@ -26,17 +26,15 @@ func TestAPI(t *testing.T) {
 	})
 
 	t.Run("Test Get Timeout", func(t *testing.T) {
-		apiTimeout := request.NewAPI(0)
-		resp := apiTimeout.GET(&url, nil)
-		result := api.GetResult(resp)
-		if result.Err != nil {
-			t.Log(result.Err.Error())
-		} else {
-			if result.StatusCode != 200 {
-				logs.Error("Status code is ", result.StatusCode)
-				return
+		for i := 0; i <= 10000; i++ {
+			apiTimeout := request.NewAPI(10)
+			resp := apiTimeout.GET(&url, nil)
+			result, err := api.ReadResponse(<-resp)
+			if err != nil {
+				logs.Error(err.Error())
+			} else {
+				logs.Info(string(result), "\n")
 			}
-			t.Error("Call api success")
 		}
 	})
 }
