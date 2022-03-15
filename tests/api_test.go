@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/lamhai1401/gologs/logs"
 	"github.com/lamhai1401/request/request"
 )
 
@@ -25,16 +24,16 @@ func TestAPI(t *testing.T) {
 		api.GET(&url, nil)
 	})
 
-	t.Run("Test Get Timeout", func(t *testing.T) {
-		for i := 0; i <= 10000; i++ {
-			apiTimeout := request.NewAPI(10)
-			resp := apiTimeout.GET(&url, nil)
-			result, err := api.ReadResponse(<-resp)
-			if err != nil {
-				logs.Error(err.Error())
-			} else {
-				logs.Info(string(result), "\n")
-			}
-		}
-	})
+	// t.Run("Test Get Timeout", func(t *testing.T) {
+	// 	for i := 0; i <= 10000; i++ {
+	// 		apiTimeout := request.NewAPI(10)
+	// 		resp := apiTimeout.GET(&url, nil)
+	// 		result, err := api.ReadResponse(<-resp)
+	// 		if err != nil {
+	// 			logs.Error(err.Error())
+	// 		} else {
+	// 			logs.Info(string(result), "\n")
+	// 		}
+	// 	}
+	// })
 }

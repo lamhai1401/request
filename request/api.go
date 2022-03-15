@@ -209,10 +209,7 @@ func (a *API) makeRequest(url *string, method string, body io.Reader) (*http.Req
 }
 
 func (a *API) doRequest(r *APIResp) {
-	if r.header == nil {
-		r.header = make(map[string]string)
-	}
-	r.header["Content-Type"] = "application/json"
+	r.Request.Header.Set("Content-Type", "application/json")
 	resp, err := a.client.Do(r.Request)
 	if err != nil {
 		r.Resp <- &http.Response{
